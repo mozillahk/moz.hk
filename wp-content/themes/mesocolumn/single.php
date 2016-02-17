@@ -9,15 +9,20 @@
 
 <!-- POST ENTRY START -->
 <div id="post-entry">
-<section class="post-entry-inner">
+
+<div class="post-entry-inner">
+
+<?php do_action( 'bp_before_blog_entry' ); ?>
 
 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
+<?php do_action( 'bp_before_blog_post' ); ?>
+
 <!-- POST START -->
-<article <?php post_class('post-single'); ?> id="post-<?php the_ID(); ?>">
+<article <?php post_class('post-single'); ?> id="post-<?php the_ID(); ?>" <?php do_action('bp_article_start'); ?>>
 
 <div class="post-top">
-<h1 class="post-title entry-title"><?php the_title(); ?></h1>
+<h1 class="post-title entry-title" <?php do_action('bp_article_post_title'); ?>><?php the_title(); ?></h1>
 <?php get_template_part( 'lib/templates/post-meta' ); ?>
 </div>
 
@@ -25,20 +30,18 @@
 
 <div class="post-content">
 
-<?php $get_ads_single_top = get_theme_option('ads_single_top'); if($get_ads_single_top != '') { ?>
-<div class="adsense-single"><?php echo stripcslashes(do_shortcode($get_ads_single_top)); ?></div>
+<?php $get_ads_single_top = get_theme_mod('ads_single_top'); if($get_ads_single_top != '') { ?>
+<div class="adsense-single adtop"><?php echo stripcslashes(do_shortcode($get_ads_single_top)); ?></div>
 <?php } ?>
 
-<div class="entry-content"><?php the_content( __('...more &raquo;',TEMPLATE_DOMAIN) ); ?></div>
+<div class="entry-content" <?php do_action('bp_article_post_content'); ?>>
+<?php the_content( __('...more &raquo;','mesocolumn') ); ?>
+</div>
 <?php wp_link_pages('before=<div id="page-links">&after=</div>'); ?>
 
-<?php $get_ads_single_bottom = get_theme_option('ads_single_bottom'); if($get_ads_single_bottom != '') { ?>
-<div class="adsense-single"><?php echo stripcslashes(do_shortcode($get_ads_single_bottom)); ?></div>
+<?php $get_ads_single_bottom = get_theme_mod('ads_single_bottom'); if($get_ads_single_bottom != '') { ?>
+<div class="adsense-single adbottom"><?php echo stripcslashes(do_shortcode($get_ads_single_bottom)); ?></div>
 <?php } ?>
-
-<?php if( get_post_type() != 'post' && get_post_type() != 'page' ): ?>
-<?php echo the_taxonomies('before=<span class="post-category">&after=</span>'); ?>
-<?php endif; ?>
 
 </div>
 
@@ -46,8 +49,7 @@
 
 <?php get_template_part( 'lib/templates/post-meta', 'bottom' ); ?>
 
-<?php
-$get_related = get_theme_option('related_on'); if($get_related == 'Enable'):
+<?php $get_related = get_theme_mod('related_on'); if($get_related == 'enable'):
 get_template_part( 'lib/templates/related' );
 endif
 ?>
@@ -55,12 +57,14 @@ endif
 </article>
 <!-- POST END -->
 
+<?php do_action( 'bp_after_blog_post' ); ?>
+
 <?php if( function_exists('dez_set_wp_post_view') ){ dez_set_wp_post_view( get_the_ID() ); } ?>
 
 <?php endwhile; ?>
 
 <?php
-$get_author_bio = get_theme_option('author_bio_on'); if($get_author_bio == 'Enable'):
+$get_author_bio = get_theme_mod('author_bio_on'); if($get_author_bio == 'enable'):
 get_template_part( 'lib/templates/author-bio' );
 endif
 ?>
@@ -75,7 +79,8 @@ endif
 
 <?php get_template_part( 'lib/templates/paginate' ); ?>
 
-</section>
+<?php do_action( 'bp_after_blog_entry' ); ?>
+</div>
 </div>
 <!-- POST ENTRY END -->
 
