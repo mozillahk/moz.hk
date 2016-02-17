@@ -1,4 +1,3 @@
-blog.mozillahk.org
-==================
+Web site of Mozilla Hong Kong
+=============================
 
-Blog of mozillahk.org
